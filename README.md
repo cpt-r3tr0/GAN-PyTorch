@@ -143,10 +143,10 @@ We introduce a simple semi-supervised learning approach for images based on in-p
 [[Paper]](https://arxiv.org/abs/1611.06430) [[Code]](implementations/ccgan/ccgan.py)
 
 #### Run Example
-    ```
-    $ cd implementations/ccgan/
-    $ python3 ccgan.py
-    ```
+```
+$ cd implementations/ccgan/
+$ python3 ccgan.py
+```
 
 ### Context Encoder
 _Context Encoders: Feature Learning by Inpainting_
@@ -160,11 +160,11 @@ We present an unsupervised visual feature learning algorithm driven by context-b
 [[Paper]](https://arxiv.org/abs/1604.07379) [[Code]](implementations/context_encoder/context_encoder.py)
 
 #### Run Example
-    ```
-    $ cd implementations/context_encoder/
-    <follow steps at the top of context_encoder.py>
-    $ python3 context_encoder.py
-    ```
+```
+$ cd implementations/context_encoder/
+<follow steps at the top of context_encoder.py>
+$ python3 context_encoder.py
+```
 
 <p align="center">
     <img src="assets/context_encoder.png" width="640"\>
