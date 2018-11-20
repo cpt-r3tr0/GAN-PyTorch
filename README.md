@@ -12,6 +12,12 @@ Collection of PyTorch implementations of Generative Adversarial Network varietie
     + [Conditional GAN](#conditional-gan)
     + [Context-Conditional GAN](#context-conditional-gan)
     + [Context Encoder](#context-encoder)
+    + [Coupled GAN](#coupled-gan)
+    + [CycleGAN](#cyclegan)
+    + [Deep Convolutional GAN](#deep-convolutional-gan)
+    + [DiscoGAN](#discogan)
+    + [DRAGAN](#dragan)
+    + [DualGAN](#dualgan)
 
 ## Installation
     $ git clone https://github.com/cpt-r3tr0/GAN-PyTorch.git
@@ -173,3 +179,147 @@ $ python3 context_encoder.py
 <p align="center">
     Rows: Masked | Inpainted | Original | Masked | Inpainted | Original
 </p>
+
+### Coupled GAN
+_Coupled Generative Adversarial Networks_
+
+#### Authors
+Ming-Yu Liu, Oncel Tuzel
+
+#### Abstract
+We propose coupled generative adversarial network (CoGAN) for learning a joint distribution of multi-domain images. In contrast to the existing approaches, which require tuples of corresponding images in different domains in the training set, CoGAN can learn a joint distribution without any tuple of corresponding images. It can learn a joint distribution with just samples drawn from the marginal distributions. This is achieved by enforcing a weight-sharing constraint that limits the network capacity and favors a joint distribution solution over a product of marginal distributions one. We apply CoGAN to several joint distribution learning tasks, including learning a joint distribution of color and depth images, and learning a joint distribution of face images with different attributes. For each task it successfully learns the joint distribution without any tuple of corresponding images. We also demonstrate its applications to domain adaptation and image transformation.
+
+[[Paper]](https://arxiv.org/abs/1606.07536) [[Code]](implementations/cogan/cogan.py)
+
+#### Run Example
+```
+$ cd implementations/cogan/
+$ python3 cogan.py
+```
+
+<p align="center">
+    <img src="assets/cogan.gif" width="360"\>
+</p>
+<p align="center">
+    Generated MNIST and MNIST-M images
+</p>
+
+### CycleGAN
+_Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks_
+
+#### Authors
+Jun-Yan Zhu, Taesung Park, Phillip Isola, Alexei A. Efros
+
+#### Abstract
+Image-to-image translation is a class of vision and graphics problems where the goal is to learn the mapping between an input image and an output image using a training set of aligned image pairs. However, for many tasks, paired training data will not be available. We present an approach for learning to translate an image from a source domain X to a target domain Y in the absence of paired examples. Our goal is to learn a mapping G:X→Y such that the distribution of images from G(X) is indistinguishable from the distribution Y using an adversarial loss. Because this mapping is highly under-constrained, we couple it with an inverse mapping F:Y→X and introduce a cycle consistency loss to push F(G(X))≈X (and vice versa). Qualitative results are presented on several tasks where paired training data does not exist, including collection style transfer, object transfiguration, season transfer, photo enhancement, etc. Quantitative comparisons against several prior methods demonstrate the superiority of our approach.
+
+[[Paper]](https://arxiv.org/abs/1703.10593) [[Code]](implementations/cyclegan/cyclegan.py)
+
+<p align="center">
+    <img src="http://eriklindernoren.se/images/cyclegan.png" width="640"\>
+</p>
+
+#### Run Example
+```
+$ cd data/
+$ bash download_cyclegan_dataset.sh monet2photo
+$ cd ../implementations/cyclegan/
+$ python3 cyclegan.py --dataset_name monet2photo
+```
+
+<p align="center">
+    <img src="assets/cyclegan.png" width="900"\>
+</p>
+<p align="center">
+    Monet to photo translations.
+</p>
+
+### Deep Convolutional GAN
+_Deep Convolutional Generative Adversarial Network_
+
+#### Authors
+Alec Radford, Luke Metz, Soumith Chintala
+
+#### Abstract
+In recent years, supervised learning with convolutional networks (CNNs) has seen huge adoption in computer vision applications. Comparatively, unsupervised learning with CNNs has received less attention. In this work we hope to help bridge the gap between the success of CNNs for supervised learning and unsupervised learning. We introduce a class of CNNs called deep convolutional generative adversarial networks (DCGANs), that have certain architectural constraints, and demonstrate that they are a strong candidate for unsupervised learning. Training on various image datasets, we show convincing evidence that our deep convolutional adversarial pair learns a hierarchy of representations from object parts to scenes in both the generator and discriminator. Additionally, we use the learned features for novel tasks - demonstrating their applicability as general image representations.
+
+[[Paper]](https://arxiv.org/abs/1511.06434) [[Code]](implementations/dcgan/dcgan.py)
+
+#### Run Example
+```
+$ cd implementations/dcgan/
+$ python3 dcgan.py
+```
+
+<p align="center">
+    <img src="assets/dcgan.gif" width="240"\>
+</p>
+
+### DiscoGAN
+_Learning to Discover Cross-Domain Relations with Generative Adversarial Networks_
+
+#### Authors
+Taeksoo Kim, Moonsu Cha, Hyunsoo Kim, Jung Kwon Lee, Jiwon Kim
+
+#### Abstract
+While humans easily recognize relations between data from different domains without any supervision, learning to automatically discover them is in general very challenging and needs many ground-truth pairs that illustrate the relations. To avoid costly pairing, we address the task of discovering cross-domain relations given unpaired data. We propose a method based on generative adversarial networks that learns to discover relations between different domains (DiscoGAN). Using the discovered relations, our proposed network successfully transfers style from one domain to another while preserving key attributes such as orientation and face identity.
+
+[[Paper]](https://arxiv.org/abs/1703.05192) [[Code]](implementations/discogan/discogan.py)
+
+<p align="center">
+    <img src="http://eriklindernoren.se/images/discogan_architecture.png" width="640"\>
+</p>
+
+#### Run Example
+```
+$ cd data/
+$ bash download_pix2pix_dataset.sh edges2shoes
+$ cd ../implementations/discogan/
+$ python3 discogan.py --dataset_name edges2shoes
+```
+
+<p align="center">
+    <img src="assets/discogan.png" width="480"\>
+</p>
+<p align="center">
+    Rows from top to bottom: (1) Real image from domain A (2) Translated image from <br>
+    domain A (3) Reconstructed image from domain A (4) Real image from domain B (5) <br>
+    Translated image from domain B (6) Reconstructed image from domain B
+</p>
+
+### DRAGAN
+_On Convergence and Stability of GANs_
+
+#### Authors
+Naveen Kodali, Jacob Abernethy, James Hays, Zsolt Kira
+
+#### Abstract
+We propose studying GAN training dynamics as regret minimization, which is in contrast to the popular view that there is consistent minimization of a divergence between real and generated distributions. We analyze the convergence of GAN training from this new point of view to understand why mode collapse happens. We hypothesize the existence of undesirable local equilibria in this non-convex game to be responsible for mode collapse. We observe that these local equilibria often exhibit sharp gradients of the discriminator function around some real data points. We demonstrate that these degenerate local equilibria can be avoided with a gradient penalty scheme called DRAGAN. We show that DRAGAN enables faster training, achieves improved stability with fewer mode collapses, and leads to generator networks with better modeling performance across a variety of architectures and objective functions.
+
+[[Paper]](https://arxiv.org/abs/1705.07215) [[Code]](implementations/dragan/dragan.py)
+
+#### Run Example
+```
+$ cd implementations/dragan/
+$ python3 dragan.py
+```
+
+### DualGAN
+_DualGAN: Unsupervised Dual Learning for Image-to-Image Translation_
+
+#### Authors
+Zili Yi, Hao Zhang, Ping Tan, Minglun Gong
+
+#### Abstract
+Conditional Generative Adversarial Networks (GANs) for cross-domain image-to-image translation have made much progress recently. Depending on the task complexity, thousands to millions of labeled image pairs are needed to train a conditional GAN. However, human labeling is expensive, even impractical, and large quantities of data may not always be available. Inspired by dual learning from natural language translation, we develop a novel dual-GAN mechanism, which enables image translators to be trained from two sets of unlabeled images from two domains. In our architecture, the primal GAN learns to translate images from domain U to those in domain V, while the dual GAN learns to invert the task. The closed loop made by the primal and dual tasks allows images from either domain to be translated and then reconstructed. Hence a loss function that accounts for the reconstruction error of images can be used to train the translators. Experiments on multiple image translation tasks with unlabeled data show considerable performance gain of DualGAN over a single GAN. For some tasks, DualGAN can even achieve comparable or slightly better results than conditional GAN trained on fully labeled data.
+
+[[Paper]](https://arxiv.org/abs/1704.02510) [[Code]](implementations/dualgan/dualgan.py)
+
+
+#### Run Example
+```
+$ cd data/
+$ bash download_pix2pix_dataset.sh facades
+$ cd ../implementations/dualgan/
+$ python3 dualgan.py --dataset_name facades
+```
