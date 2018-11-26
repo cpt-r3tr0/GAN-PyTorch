@@ -19,6 +19,19 @@ Collection of PyTorch implementations of Generative Adversarial Network varietie
     + [DRAGAN](#dragan)
     + [DualGAN](#dualgan)
     + [Energy-Based GAN](#energy-based-gan)
+    + [GAN](#gan)
+    + [InfoGAN](#infogan)
+    + [Least Squares GAN](#least-squares-gan)
+    + [MUNIT](#munit)
+    + [Pix2Pix](#pix2pix)
+    + [PixelDA](#pixelda)
+    + [Semi-Supervised GAN](#semi-supervised-gan)
+    + [Softmax GAN](#softmax-gan)
+    + [StarGAN](#stargan)
+    + [Super-Resolution GAN](#super-resolution-gan)
+    + [UNIT](#unit)
+    + [Wasserstein GAN](#wasserstein-gan)
+    + [Wasserstein GAN GP](#wasserstein-gan-gp)
 
 ## Installation
     $ git clone https://github.com/cpt-r3tr0/GAN-PyTorch.git
@@ -432,3 +445,210 @@ $ cd ../implementations/munit/
 $ python3 munit.py --dataset_name edges2shoes
 ```
 
+### Pix2Pix
+_Unpaired Image-to-Image Translation with Conditional Adversarial Networks_
+
+#### Authors
+Phillip Isola, Jun-Yan Zhu, Tinghui Zhou, Alexei A. Efros
+
+#### Abstract
+We investigate conditional adversarial networks as a general-purpose solution to image-to-image translation problems. These networks not only learn the mapping from input image to output image, but also learn a loss function to train this mapping. This makes it possible to apply the same generic approach to problems that traditionally would require very different loss formulations. We demonstrate that this approach is effective at synthesizing photos from label maps, reconstructing objects from edge maps, and colorizing images, among other tasks. Indeed, since the release of the pix2pix software associated with this paper, a large number of internet users (many of them artists) have posted their own experiments with our system, further demonstrating its wide applicability and ease of adoption without the need for parameter tweaking. As a community, we no longer hand-engineer our mapping functions, and this work suggests we can achieve reasonable results without hand-engineering our loss functions either.
+
+[[Paper]](https://arxiv.org/abs/1611.07004) [[Code]](implementations/pix2pix/pix2pix.py)
+
+<p align="center">
+    <img src="assets/pix2pix_architecture.png" width="640"\>
+</p>
+
+#### Run Example
+```
+$ cd data/
+$ bash download_pix2pix_dataset.sh facades
+$ cd ../implementations/pix2pix/
+$ python3 pix2pix.py --dataset_name facades
+```
+
+<p align="center">
+    <img src="assets/pix2pix.png" width="480"\>
+</p>
+<p align="center">
+    Rows from top to bottom: (1) The condition for the generator (2) Generated image <br>
+    based of condition (3) The true corresponding image to the condition
+</p>
+
+### PixelDA
+_Unsupervised Pixel-Level Domain Adaptation with Generative Adversarial Networks_
+
+#### Authors
+Konstantinos Bousmalis, Nathan Silberman, David Dohan, Dumitru Erhan, Dilip Krishnan
+
+#### Abstract
+Collecting well-annotated image datasets to train modern machine learning algorithms is prohibitively expensive for many tasks. One appealing alternative is rendering synthetic data where ground-truth annotations are generated automatically. Unfortunately, models trained purely on rendered images often fail to generalize to real images. To address this shortcoming, prior work introduced unsupervised domain adaptation algorithms that attempt to map representations between the two domains or learn to extract features that are domain-invariant. In this work, we present a new approach that learns, in an unsupervised manner, a transformation in the pixel space from one domain to the other. Our generative adversarial network (GAN)-based method adapts source-domain images to appear as if drawn from the target domain. Our approach not only produces plausible samples, but also outperforms the state-of-the-art on a number of unsupervised domain adaptation scenarios by large margins. Finally, we demonstrate that the adaptation process generalizes to object classes unseen during training.
+
+[[Paper]](https://arxiv.org/abs/1612.05424) [[Code]](implementations/pixelda/pixelda.py)
+
+#### MNIST to MNIST-M Classification
+Trains a classifier on images that have been translated from the source domain (MNIST) to the target domain (MNIST-M) using the annotations of the source domain images. The classification network is trained jointly with the generator network to optimize the generator for both providing a proper domain translation and also for preserving the semantics of the source domain image. The classification network trained on translated images is compared to the naive solution of training a classifier on MNIST and evaluating it on MNIST-M. The naive model manages a 55% classification accuracy on MNIST-M while the one trained during domain adaptation achieves a 95% classification accuracy.
+
+```
+$ cd implementations/pixelda/
+$ python3 pixelda.py
+```  
+| Method       | Accuracy  |
+| ------------ |:---------:|
+| Naive        | 55%       |
+| PixelDA      | 95%       |
+
+<p align="center">
+    <img src="assets/pixelda.png" width="480"\>
+</p>
+<p align="center">
+    Rows from top to bottom: (1) Real images from MNIST (2) Translated images from <br>
+    MNIST to MNIST-M (3) Examples of images from MNIST-M
+</p>
+
+### Semi-Supervised GAN
+_Semi-Supervised Generative Adversarial Network_
+
+#### Authors
+Augustus Odena
+
+#### Abstract
+We extend Generative Adversarial Networks (GANs) to the semi-supervised context by forcing the discriminator network to output class labels. We train a generative model G and a discriminator D on a dataset with inputs belonging to one of N classes. At training time, D is made to predict which of N+1 classes the input belongs to, where an extra class is added to correspond to the outputs of G. We show that this method can be used to create a more data-efficient classifier and that it allows for generating higher quality samples than a regular GAN.
+
+[[Paper]](https://arxiv.org/abs/1606.01583) [[Code]](implementations/sgan/sgan.py)
+
+#### Run Example
+```
+$ cd implementations/sgan/
+$ python3 sgan.py
+```
+
+### Softmax GAN
+_Softmax GAN_
+
+#### Authors
+Min Lin
+
+#### Abstract
+Softmax GAN is a novel variant of Generative Adversarial Network (GAN). The key idea of Softmax GAN is to replace the classification loss in the original GAN with a softmax cross-entropy loss in the sample space of one single batch. In the adversarial learning of N real training samples and M generated samples, the target of discriminator training is to distribute all the probability mass to the real samples, each with probability 1M, and distribute zero probability to generated data. In the generator training phase, the target is to assign equal probability to all data points in the batch, each with probability 1M+N. While the original GAN is closely related to Noise Contrastive Estimation (NCE), we show that Softmax GAN is the Importance Sampling version of GAN. We futher demonstrate with experiments that this simple change stabilizes GAN training.
+
+[[Paper]](https://arxiv.org/abs/1704.06191) [[Code]](implementations/softmax_gan/softmax_gan.py)
+
+#### Run Example
+```
+$ cd implementations/softmax_gan/
+$ python3 softmax_gan.py
+```
+
+### StarGAN
+_StarGAN: Unified Generative Adversarial Networks for Multi-Domain Image-to-Image Translation_
+
+#### Authors
+Yunjey Choi, Minje Choi, Munyoung Kim, Jung-Woo Ha, Sunghun Kim, Jaegul Choo
+
+#### Abstract
+Recent studies have shown remarkable success in image-to-image translation for two domains. However, existing approaches have limited scalability and robustness in handling more than two domains, since different models should be built independently for every pair of image domains. To address this limitation, we propose StarGAN, a novel and scalable approach that can perform image-to-image translations for multiple domains using only a single model. Such a unified model architecture of StarGAN allows simultaneous training of multiple datasets with different domains within a single network. This leads to StarGAN's superior quality of translated images compared to existing models as well as the novel capability of flexibly translating an input image to any desired target domain. We empirically demonstrate the effectiveness of our approach on a facial attribute transfer and a facial expression synthesis tasks.
+
+[[Paper]](https://arxiv.org/abs/1711.09020) [[Code]](implementations/stargan/stargan.py)
+
+#### Run Example
+```
+$ cd implementations/stargan/
+<follow steps at the top of stargan.py>
+$ python3 stargan.py
+```
+
+<p align="center">
+    <img src="assets/stargan.png" width="640"\>
+</p>
+<p align="center">
+    Original | Black Hair | Blonde Hair | Brown Hair | Gender Flip | Aged
+</p>
+
+### Super-Resolution GAN
+_Photo-Realistic Single Image Super-Resolution Using a Generative Adversarial Network_
+
+#### Authors
+Christian Ledig, Lucas Theis, Ferenc Huszar, Jose Caballero, Andrew Cunningham, Alejandro Acosta, Andrew Aitken, Alykhan Tejani, Johannes Totz, Zehan Wang, Wenzhe Shi
+
+#### Abstract
+Despite the breakthroughs in accuracy and speed of single image super-resolution using faster and deeper convolutional neural networks, one central problem remains largely unsolved: how do we recover the finer texture details when we super-resolve at large upscaling factors? The behavior of optimization-based super-resolution methods is principally driven by the choice of the objective function. Recent work has largely focused on minimizing the mean squared reconstruction error. The resulting estimates have high peak signal-to-noise ratios, but they are often lacking high-frequency details and are perceptually unsatisfying in the sense that they fail to match the fidelity expected at the higher resolution. In this paper, we present SRGAN, a generative adversarial network (GAN) for image super-resolution (SR). To our knowledge, it is the first framework capable of inferring photo-realistic natural images for 4x upscaling factors. To achieve this, we propose a perceptual loss function which consists of an adversarial loss and a content loss. The adversarial loss pushes our solution to the natural image manifold using a discriminator network that is trained to differentiate between the super-resolved images and original photo-realistic images. In addition, we use a content loss motivated by perceptual similarity instead of similarity in pixel space. Our deep residual network is able to recover photo-realistic textures from heavily downsampled images on public benchmarks. An extensive mean-opinion-score (MOS) test shows hugely significant gains in perceptual quality using SRGAN. The MOS scores obtained with SRGAN are closer to those of the original high-resolution images than to those obtained with any state-of-the-art method.
+
+[[Paper]](https://arxiv.org/abs/1609.04802) [[Code]](implementations/srgan/srgan.py)
+
+<p align="center">
+    <img src="assets/superresgan.png" width="640"\>
+</p>
+
+#### Run Example
+```
+$ cd implementations/srgan/
+<follow steps at the top of srgan.py>
+$ python3 srgan.py
+```
+
+<p align="center">
+    <img src="assets/srgan.png" width="240"\>
+</p>
+<p align="center">
+    Rows from top to bottom: (1) Generated sample by Super-resolution GAN (2) The full <br>
+    resolution image
+</p>
+
+### UNIT
+_Unsupervised Image-to-Image Translation Networks_
+
+#### Authors
+Ming-Yu Liu, Thomas Breuel, Jan Kautz
+
+#### Abstract
+Unsupervised image-to-image translation aims at learning a joint distribution of images in different domains by using images from the marginal distributions in individual domains. Since there exists an infinite set of joint distributions that can arrive the given marginal distributions, one could infer nothing about the joint distribution from the marginal distributions without additional assumptions. To address the problem, we make a shared-latent space assumption and propose an unsupervised image-to-image translation framework based on Coupled GANs. We compare the proposed framework with competing approaches and present high quality image translation results on various challenging unsupervised image translation tasks, including street scene image translation, animal image translation, and face image translation. We also apply the proposed framework to domain adaptation and achieve state-of-the-art performance on benchmark datasets. Code and additional results are available in this [https URL](https://github.com/mingyuliutw/unit).
+
+[[Paper]](https://arxiv.org/abs/1703.00848) [[Code]](implementations/unit/unit.py)
+
+#### Run Example
+```
+$ cd data/
+$ bash download_cyclegan_dataset.sh apple2orange
+$ cd implementations/unit/
+$ python3 unit.py --dataset_name apple2orange
+```
+
+### Wasserstein GAN
+_Wasserstein GAN_
+
+#### Authors
+Martin Arjovsky, Soumith Chintala, Léon Bottou
+
+#### Abstract
+We introduce a new algorithm named WGAN, an alternative to traditional GAN training. In this new model, we show that we can improve the stability of learning, get rid of problems like mode collapse, and provide meaningful learning curves useful for debugging and hyperparameter searches. Furthermore, we show that the corresponding optimization problem is sound, and provide extensive theoretical work highlighting the deep connections to other distances between distributions.
+
+[[Paper]](https://arxiv.org/abs/1701.07875) [[Code]](implementations/wgan/wgan.py)
+
+#### Run Example
+```
+$ cd implementations/wgan/
+$ python3 wgan.py
+```
+
+### Wasserstein GAN GP
+_Improved Training of Wasserstein GANs_
+
+#### Authors
+Ishaan Gulrajani, Faruk Ahmed, Martin Arjovsky, Vincent Dumoulin, Aaron Courville
+
+#### Abstract
+Generative Adversarial Networks (GANs) are powerful generative models, but suffer from training instability. The recently proposed Wasserstein GAN (WGAN) makes progress toward stable training of GANs, but sometimes can still generate only low-quality samples or fail to converge. We find that these problems are often due to the use of weight clipping in WGAN to enforce a Lipschitz constraint on the critic, which can lead to undesired behavior. We propose an alternative to clipping weights: penalize the norm of gradient of the critic with respect to its input. Our proposed method performs better than standard WGAN and enables stable training of a wide variety of GAN architectures with almost no hyperparameter tuning, including 101-layer ResNets and language models over discrete data. We also achieve high quality generations on CIFAR-10 and LSUN bedrooms.
+
+[[Paper]](https://arxiv.org/abs/1704.00028) [[Code]](implementations/wgan_gp/wgan_gp.py)
+
+#### Run Example
+```
+$ cd implementations/wgan_gp/
+$ python3 wgan_gp.py
+```
+
+<p align="center">
+    <img src="assets/wgan_gp.gif" width="240"\>
+</p>
